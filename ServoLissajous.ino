@@ -33,8 +33,8 @@ int sizeMult = 0;
 int speedDelay = 0;
 
 void setup() {
-  servoX.attach(10); 
-  servoY.attach(11);
+  servoX.attach(10); // attach x servo
+  servoY.attach(11); // attach y servo
   //  Serial.begin(9600); // needed for serial debugging
 
   pinMode( xFreq, INPUT);
@@ -42,8 +42,7 @@ void setup() {
 }
 
 void loop() {
-  // Initially designed to have a pot for x and for y.  Right now I'm just giving an int
-  // dividing the analog frequency by 250 gives 5 possible integers, dividing it by 113 gives 10
+  // Dividing the analog frequency by 250 gives 5 possible integers, dividing it by 113 gives 10
   xCoef = analogRead(xFreq)/250 + 1; // will give integer between 1 and 5 inclusive
   yCoef = analogRead(yFreq)/250 + 1; // will give integer between 1 and 5 inclusive
   sizeMult = analogRead(sizePot) + 1;
@@ -65,14 +64,14 @@ void loop() {
 
   // Determine the x and y coordinates of the current position of the Lissajous being drawn
   // Drawing screen has center at (1500,1500)
-  // x/y = MULTIPLIER(+/- size of drawing, smaller=more pixely)*sin(COEF(# of waves)*3.14159*t + phase) + CENTER POINT
+  // x/y = MULTIPLIER(multiplier will +/- size of drawing, smaller=more pixely)*sin((# of waves)*3.14159*t + phase) + CENTER POINT
   x = sizeMult*sin(xCoef*3.14159*t + phase)+1500;
   y = sizeMult*sin(yCoef*3.14159*t)+1500;
 
   // Serial Debugging
-  Serial.print(x);
-  Serial.print(",");
-  Serial.println(y);
+//  Serial.print(x);
+//  Serial.print(",");
+//  Serial.println(y);
 
   // Write our Lissajous to the servos so they can draw it.
   servoX.writeMicroseconds(x);
